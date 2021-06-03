@@ -16,3 +16,11 @@ module "policies" {
     policy.name => policy
   }
 }
+
+module "account" {
+  source                         = "./modules/iam-account"
+  users                          = local.iam_users
+  allow_users_to_change_password = local.iam_account.user_change_password
+  pgp_key                        = var.pgp_key
+  company_alias                  = local.iam_account.company_alias
+}

@@ -11,4 +11,12 @@ locals {
       location    = "policies/ec2states.json"
     }
   ]
+
+  iam_account = {
+    user_change_password = true
+    company_alias        = var.company
+  }
+
+  iam_users = ["john", "jane", "steve"]
 }
+

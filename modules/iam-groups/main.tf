@@ -17,3 +17,12 @@ resource "aws_iam_group_policy_attachment" "group_policy" {
   policy_arn = data.aws_iam_policy.policy[each.key].arn
   depends_on = [aws_iam_group.groups, data.aws_iam_policy.policy]
 }
+
+
+resource "aws_iam_group_membership" "membership" {
+  for_each   = var.groups
+  name       = "${each.key}-membership"
+  group      = each.key
+  users      = each.value.users
+  depends_on = [aws_iam_group.groups]
+}

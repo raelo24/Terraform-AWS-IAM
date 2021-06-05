@@ -33,3 +33,9 @@ module "roles" {
     role.name => role
   }
 }
+
+module "groups" {
+  source     = "./modules/iam-groups"
+  groups     = local.iam_groups
+  depends_on = [module.policies]
+}

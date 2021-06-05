@@ -32,6 +32,6 @@ locals {
     }
   ]
 
-  
+  iam_groups = ["Dev","QA"]
 }
 

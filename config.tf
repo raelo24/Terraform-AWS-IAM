@@ -18,5 +18,20 @@ locals {
   }
 
   iam_users = ["john", "jane", "steve"]
+  
+  iam_roles = [
+    {
+      name    = "bucketmanagement"
+      version = "2012-09-12"
+      policy  = "policies/ec2role.json"
+    },
+    {
+      name    = "management2"
+      version = "2012-09-12"
+      policy  = "policies/lamdapolicy.json"
+    }
+  ]
+
+  
 }
 

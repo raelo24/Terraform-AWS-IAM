@@ -24,3 +24,12 @@ module "account" {
   pgp_key                        = var.pgp_key
   company_alias                  = local.iam_account.company_alias
 }
+
+module "roles" {
+  source       = "./modules/iam-role"
+  force_detach = true
+  roles = {
+    for role in local.iam_roles :
+    role.name => role
+  }
+}

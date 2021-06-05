@@ -18,7 +18,7 @@ locals {
   }
 
   iam_users = ["john", "jane", "steve"]
-  
+
   iam_roles = [
     {
       name    = "bucketmanagement"
@@ -32,6 +32,15 @@ locals {
     }
   ]
 
-  iam_groups = ["Dev","QA"]
+  iam_groups = {
+    developers = {
+      users  = ["john", "steve"]
+      policy = "s3access"
+    },
+    QAEngineers = {
+      users  = ["jane"]
+      policy = "ec2state"
+    }
+  }
 }
 

@@ -1,3 +1,6 @@
 variable "groups" {
-  type = list(string)
+  type = map(object({
+    policy = string
+    users  = list(string)
+  }))
 }

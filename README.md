@@ -1,9 +1,7 @@
 # Introduction #
-This is a sample kickstart project for configuring IAM infrastructure on AWS. It designed such that adding more instances of the created resources is a parameter setting. It also makes easy the reuse of already defined policies rather than having them always as inline configuration.
+This is a sample kickstart project for configuring IAM infrastructure on AWS. It designed such that adding more instances of the created resources is a parameter setting. It also makes easy the reuse of already defined policies rather than having them always as inline configurations.
 
 ## Usage ##
-The following IAM services are set up
-
 The config.tf serves as the file to set most account-specific details for the cloud. The values therein are referenced as
 ```
 local.xxxx
@@ -15,9 +13,7 @@ Set the list of users in the config file as shown here. Users can be added and r
   iam_users = ["john", "jane", "steve"]
 ```
 
-The access keys and login passwords are saved in the state files. They can be retrieved and transmiteed securely to the recipients. 
-
-The users are created individually other account details are generated as shown:
+The access keys and login profiles are also created. The access key and login passwords are saved in the state files. They can be retrieved and transmiteed securely to the recipients. The users are created individually as shown:
 ```
 resource "aws_iam_user_login_profile" "login_profiles" {
   for_each                = aws_iam_user.users
@@ -27,12 +23,27 @@ resource "aws_iam_user_login_profile" "login_profiles" {
   password_reset_required = var.reset_required
 }
 ```
- **Note** Email addresses are recommended for user creation. Also, since users are not parmanent part of the cloud infrastructure, they can be manually created, instead.
 
-You can use your keybase details for password creation.
+The access keys generation is shown as:
+```
+resource "aws_iam_access_key" "access_keys" {
+  for_each                         = aws_iam_user.users
+  user                             = each.value.name
+
+  lifecycle {
+    create_before_destroy = true
+    replace_triggered_by = [
+      time_rotating.trigger.rotation_rfc3339
+    ]
+  }
+}
+```
+ **Note** Email addresses are recommended for user creation rather than username. Also, since users are not permanent resources on the cloud infrastructure, they can be manually created, instead.
+
+You can use your <a href="https://www.keybase.io">keybase</a> details for password creation.
 
 ### IAM Policies ### 
-Document policies and trust policies are created using this module. Specify the policies in the sample config file as shown below
+Policies are created using this module. Specify the policies in the sample config file as shown below
 ```
 iam_policies = [
     {
@@ -47,7 +58,7 @@ iam_policies = [
     }
   ]
 ```
-A folder name policies contains the various custom policies of the account. You can create subfolders if you choose to categorize the policies but remember to reference the paths correctly.
+A folder named policies contains the various custom policies of the account. You can create subfolders if you choose to categorize the policies but remember to reference the paths correctly.
 
 ### IAM Roles ### 
 The roles are defined in the sample config file.
@@ -68,7 +79,7 @@ iam_roles = [
 Roles make use of trust policies not document policies, so include the trust policy file and it will be assigned for the respective role.
 
 ### IAM Groups ### 
-You can set the groups like this.
+You can set the groups like this:
 ```
 iam_groups = {
     developers = {

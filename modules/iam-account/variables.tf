@@ -73,8 +73,14 @@ variable "access_key_status" {
   description = "Status of the just created access key"
 }
 
-variable "rotation_days" {
-  type        = number
-  default     = 60
-  description = "Number of days for rotation to happen"
+variable "reset_required" {
+  type        = bool
+  default     = true
+  description = "Whether the created password should be reset on first login"
+}
+
+variable "key_initial_status" {
+  type        = string
+  default     = "Inactive"
+  description = "Inital status of the access key"
 }

@@ -24,20 +24,11 @@ resource "aws_iam_user_login_profile" "login_profiles" {
   user                            = each.value.name
   pgp_key                         = var.pgp_key
   password_length                 = 8
-}
-
-resource "time_rotating" "trigger" {
-  rotation_days                   = var.rotation_days
+  password_reset_required         = var.reset_required
 }
 
 resource "aws_iam_access_key" "access_keys" {
   for_each                         = aws_iam_user.users
   user                             = each.value.name
-
-  lifecycle {
-    create_before_destroy = true
-    replace_triggered_by = [
-      time_rotating.trigger.rotation_rfc3339
-    ]
-  }
+  status                           = var.key_initial_status
 }

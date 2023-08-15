@@ -26,10 +26,11 @@ resource "aws_iam_user_login_profile" "login_profiles" {
 
 The access keys generation is shown as:
 ```
+
 resource "aws_iam_access_key" "access_keys" {
-  for_each                         = aws_iam_user.users
-  user                             = each.value.name
-  status                           = var.key_initial_status
+  for_each              = aws_iam_user.users
+  user                  = each.value.name
+  status                = var.key_initial_status
 }
 ```
  **Note** Email addresses are recommended for user creation rather than username. Also, since users are not permanent resources on the cloud infrastructure, they can be manually created, instead.

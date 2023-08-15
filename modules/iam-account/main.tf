@@ -1,10 +1,10 @@
 resource "aws_iam_user" "users" {
-  for_each                        = toset(var.users)
-  name                            = each.key
+  for_each = toset(var.users)
+  name     = each.key
 }
 
 resource "aws_iam_account_alias" "company_alias" {
-  account_alias                   = var.company_alias
+  account_alias = var.company_alias
 }
 
 resource "aws_iam_account_password_policy" "password_policy" {
@@ -20,15 +20,15 @@ resource "aws_iam_account_password_policy" "password_policy" {
 }
 
 resource "aws_iam_user_login_profile" "login_profiles" {
-  for_each                        = aws_iam_user.users
-  user                            = each.value.name
-  pgp_key                         = var.pgp_key
-  password_length                 = 8
-  password_reset_required         = var.reset_required
+  for_each                = aws_iam_user.users
+  user                    = each.value.name
+  pgp_key                 = var.pgp_key
+  password_length         = 8
+  password_reset_required = var.reset_required
 }
 
 resource "aws_iam_access_key" "access_keys" {
-  for_each                         = aws_iam_user.users
-  user                             = each.value.name
-  status                           = var.key_initial_status
+  for_each              = aws_iam_user.users
+  user                  = each.value.name
+  status                = var.key_initial_status
 }

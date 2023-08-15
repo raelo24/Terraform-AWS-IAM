@@ -29,13 +29,7 @@ The access keys generation is shown as:
 resource "aws_iam_access_key" "access_keys" {
   for_each                         = aws_iam_user.users
   user                             = each.value.name
-
-  lifecycle {
-    create_before_destroy = true
-    replace_triggered_by = [
-      time_rotating.trigger.rotation_rfc3339
-    ]
-  }
+  status                           = var.key_initial_status
 }
 ```
  **Note** Email addresses are recommended for user creation rather than username. Also, since users are not permanent resources on the cloud infrastructure, they can be manually created, instead.

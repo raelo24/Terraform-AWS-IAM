@@ -1,6 +1,9 @@
 # Introduction #
 This is a sample kickstart project for configuring IAM infrastructure on AWS. It designed such that adding more instances of the created resources is a parameter setting. It also makes easy the reuse of already defined policies rather than having them always as inline configurations.
 
+## Security Best Practices
+Follow security best practices in your implementation. A sample guide in found in this <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/terraform-aws-provider-best-practices/security.html">document</a>. For example, follow the principle of least privilege as you create and assign policies and roles.
+
 ## Usage ##
 The config.tf serves as the file to set most account-specific details for the cloud. The values therein are referenced as
 ```
@@ -33,7 +36,7 @@ resource "aws_iam_access_key" "access_keys" {
   status                = var.key_initial_status
 }
 ```
- **Note** Email addresses are recommended for user creation rather than username. Also, since users are not permanent resources on the cloud infrastructure, they can be manually created, instead.
+ **Note** Use IAM roles instead of IAM users wherever possible to enhance security. Email addresses are recommended for user creation rather than username. Also, since users are not permanent resources on the cloud infrastructure, they can be manually created, instead.
 
 You can use your <a href="https://www.keybase.io">keybase</a> details for password creation.
 

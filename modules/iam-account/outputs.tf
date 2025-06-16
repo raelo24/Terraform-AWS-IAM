@@ -4,7 +4,7 @@ output "encrypted_passwords" {
     for i, profile in aws_iam_user_login_profile.login_profiles :
     i => profile.encrypted_password
   }
-  sensitive = false
+  sensitive = true
 }
 
 output "access_key_secrets" {
@@ -13,5 +13,5 @@ output "access_key_secrets" {
     for i, keys in aws_iam_access_key.access_keys :
     i => keys.secret
   }
-  sensitive = false
+  sensitive = true
 }
